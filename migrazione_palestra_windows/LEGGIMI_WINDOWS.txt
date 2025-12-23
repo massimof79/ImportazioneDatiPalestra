@@ -1,0 +1,249 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║     TOOL MIGRAZIONE DATABASE GESTIONE PALESTRA - WINDOWS    ║
+║                                                              ║
+║                    INDICE FILE PACCHETTO                     ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+
+📁 CONTENUTO DEL PACCHETTO
+══════════════════════════════════════════════════════════════
+
+┌──────────────────────────────────────────────────────────┐
+│ FILE PRINCIPALI                                          │
+└──────────────────────────────────────────────────────────┘
+
+📄 migrazione_palestra_windows.py
+   • Script Python principale per la migrazione
+   • Legge dati da Access (yuki2.mdb)
+   • Scrive dati su MySQL (gestione_palestra)
+   • MODIFICA i path ACCESS_DB_PATH e SQL_SCHEMA_PATH
+   
+📄 migra.bat
+   • Script batch per eseguire la migrazione
+   • Controlla requisiti
+   • Chiede conferma prima di procedere
+   • USO: Doppio click o da cmd: migra.bat
+
+📄 migrazione_palestra_windows.zip
+   • Archivio compresso con tutti i file
+   • Comodo per trasferire su altri PC
+   • Estrai con WinZip, 7-Zip, o Windows Explorer
+
+
+┌──────────────────────────────────────────────────────────┐
+│ DOCUMENTAZIONE                                           │
+└──────────────────────────────────────────────────────────┘
+
+📘 README_WINDOWS.md
+   • Documentazione completa e dettagliata
+   • Requisiti di sistema
+   • Istruzioni di configurazione
+   • Risoluzione problemi
+   • LEGGI PRIMA per info complete
+
+📘 GUIDA_RAPIDA_WINDOWS.txt
+   • Guida sintetica per avvio veloce
+   • Checklist pre/post migrazione
+   • Risoluzione rapida problemi
+   • IDEALE per chi ha già esperienza
+
+📘 INSTALLAZIONE_WINDOWS.txt
+   • Guida passo-passo installazione requisiti
+   • Link download software necessario
+   • Istruzioni per Python, MySQL, Access Engine
+   • Verifica installazione
+   • LEGGI se è la prima installazione
+
+
+┌──────────────────────────────────────────────────────────┐
+│ CONFIGURAZIONE                                           │
+└──────────────────────────────────────────────────────────┘
+
+📄 config_windows.ini
+   • File di configurazione (uso futuro)
+   • Contiene impostazioni database
+   • ATTUALMENTE non usato dallo script
+   • Per ora modifica direttamente il file .py
+
+
+┌──────────────────────────────────────────────────────────┐
+│ SCRIPT DI UTILITÀ                                        │
+└──────────────────────────────────────────────────────────┘
+
+🔧 verifica_requisiti.bat
+   • Controlla se tutti i requisiti sono installati
+   • Verifica Python, pip, librerie, MySQL
+   • ESEGUI PRIMA della migrazione
+   • USO: Doppio click o da cmd
+
+🔧 test_connessione.bat
+   • Testa connessione a Access e MySQL
+   • Utile per debug
+   • MODIFICA i path nel file prima dell'uso
+   • USO: Doppio click o da cmd
+
+📄 verifica_migrazione.sql
+   • Script SQL per verificare dati dopo migrazione
+   • Mostra statistiche e conteggi
+   • USO: mysql -u root -p gestione_palestra < verifica_migrazione.sql
+
+
+┌──────────────────────────────────────────────────────────┐
+│ FILE DA FORNIRE                                          │
+└──────────────────────────────────────────────────────────┘
+
+⚠️  I seguenti file DEVONO essere forniti da te:
+
+📁 yuki2.mdb
+   • Database Access del vecchio sistema
+   • SORGENTE dei dati da migrare
+   • Posizionalo nella stessa cartella
+
+📁 gestione_palestra.sql
+   • Schema del nuovo database MySQL
+   • Struttura tabelle destinazione
+   • Posizionalo nella stessa cartella
+
+
+══════════════════════════════════════════════════════════════
+
+🚀 PROCEDURA VELOCE DI AVVIO
+══════════════════════════════════════════════════════════════
+
+1️⃣  INSTALLAZIONE REQUISITI (una tantum)
+   □ Leggi: INSTALLAZIONE_WINDOWS.txt
+   □ Installa Python, MySQL, Access Engine
+   □ Installa librerie: pip install pyodbc mysql-connector-python
+   □ Verifica: Esegui verifica_requisiti.bat
+
+2️⃣  CONFIGURAZIONE
+   □ Copia yuki2.mdb e gestione_palestra.sql nella cartella
+   □ Apri migrazione_palestra_windows.py
+   □ Modifica ACCESS_DB_PATH con path corretto
+   □ Modifica SQL_SCHEMA_PATH con path corretto
+   □ Modifica password MySQL se necessario
+
+3️⃣  TEST (opzionale ma consigliato)
+   □ Modifica test_connessione.bat con i tuoi path
+   □ Esegui test_connessione.bat
+   □ Verifica che entrambi i database siano raggiungibili
+
+4️⃣  MIGRAZIONE
+   □ Doppio click su migra.bat
+   □ Oppure: python migrazione_palestra_windows.py
+   □ Conferma con SI quando richiesto
+   □ Attendi completamento
+
+5️⃣  VERIFICA
+   □ Esegui: mysql -u root -p gestione_palestra < verifica_migrazione.sql
+   □ Controlla i dati migrati
+   □ Cambia password admin!
+
+
+══════════════════════════════════════════════════════════════
+
+📊 MAPPATURA DATI
+══════════════════════════════════════════════════════════════
+
+Access (vecchio)        →  MySQL (nuovo)
+─────────────────────────────────────────────────────────────
+Anagrafica              →  clienti
+Pagamenti               →  pagamenti
+Discipline              →  corsi
+TipiAbbonamento         →  abbonamenti
+ScadenzaIscrizione      →  iscrizioni
+
+
+══════════════════════════════════════════════════════════════
+
+⚠️  AVVERTENZE IMPORTANTI
+══════════════════════════════════════════════════════════════
+
+• Il database "gestione_palestra" viene COMPLETAMENTE CANCELLATO
+• TUTTI i dati esistenti vengono PERSI
+• Fai un BACKUP prima di procedere
+• La migrazione può essere ripetuta più volte
+• Ogni esecuzione reimporta TUTTI i dati da zero
+
+
+══════════════════════════════════════════════════════════════
+
+🔐 CREDENZIALI DEFAULT
+══════════════════════════════════════════════════════════════
+
+Dopo la migrazione viene creato un utente admin:
+
+Username: admin
+Password: admin123
+
+⚠️  CAMBIA IMMEDIATAMENTE LA PASSWORD!
+
+
+══════════════════════════════════════════════════════════════
+
+📞 SUPPORTO
+══════════════════════════════════════════════════════════════
+
+Per problemi:
+1. Consulta README_WINDOWS.md (sezione "Problemi Comuni")
+2. Consulta INSTALLAZIONE_WINDOWS.txt (per problemi di installazione)
+3. Esegui verifica_requisiti.bat
+4. Esegui test_connessione.bat
+5. Controlla i messaggi di errore dello script
+
+
+══════════════════════════════════════════════════════════════
+
+📌 LINK UTILI
+══════════════════════════════════════════════════════════════
+
+Python:
+   https://www.python.org/downloads/
+
+MySQL:
+   https://dev.mysql.com/downloads/mysql/
+
+Access Database Engine:
+   https://www.microsoft.com/download/details.aspx?id=54920
+
+pyodbc:
+   https://pypi.org/project/pyodbc/
+
+mysql-connector-python:
+   https://pypi.org/project/mysql-connector-python/
+
+
+══════════════════════════════════════════════════════════════
+
+✅ CHECKLIST FINALE
+══════════════════════════════════════════════════════════════
+
+Prima della migrazione:
+□ Tutti i requisiti installati (verifica_requisiti.bat)
+□ File yuki2.mdb presente
+□ File gestione_palestra.sql presente
+□ Path corretti in migrazione_palestra_windows.py
+□ Credenziali MySQL corrette
+□ Backup esistente (se necessario)
+□ Test connessione OK (test_connessione.bat)
+
+Dopo la migrazione:
+□ Nessun errore critico
+□ Conteggio record corretto
+□ Verifica SQL eseguita (verifica_migrazione.sql)
+□ Password admin cambiata
+□ Backup nuovo database creato
+
+
+══════════════════════════════════════════════════════════════
+
+                      BUONA MIGRAZIONE! 🚀
+
+══════════════════════════════════════════════════════════════
+
+
+Versione: 1.0 Windows
+Autore: Massimo
+Data: Dicembre 2025

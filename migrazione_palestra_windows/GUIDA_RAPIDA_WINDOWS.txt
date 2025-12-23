@@ -1,0 +1,245 @@
+╔══════════════════════════════════════════════════════════════╗
+║                GUIDA RAPIDA - WINDOWS                        ║
+║         Tool di Migrazione Database Palestra                 ║
+╚══════════════════════════════════════════════════════════════╝
+
+📋 REQUISITI MINIMI
+─────────────────────────────────────────────────────────────
+
+□ Windows 7/8/10/11
+□ Python 3.x installato
+□ MySQL/MariaDB installato e in esecuzione
+□ Microsoft Access Database Engine (driver ODBC)
+□ Librerie Python: pyodbc, mysql-connector-python
+
+
+🚀 INSTALLAZIONE VELOCE
+─────────────────────────────────────────────────────────────
+
+STEP 1: Installa Python
+   ↓ https://www.python.org/downloads/
+   ✓ Spunta "Add Python to PATH" durante installazione
+
+STEP 2: Installa MySQL/MariaDB
+   ↓ https://dev.mysql.com/downloads/mysql/
+
+STEP 3: Installa Access Database Engine
+   ↓ https://www.microsoft.com/download/details.aspx?id=54920
+
+STEP 4: Installa librerie Python
+   Apri Prompt dei comandi (come Amministratore):
+   
+   C:\> pip install pyodbc
+   C:\> pip install mysql-connector-python
+
+
+⚙️ CONFIGURAZIONE IN 3 PASSI
+─────────────────────────────────────────────────────────────
+
+1. Crea cartella, esempio: C:\MigrazionePalestra
+
+2. Copia questi file nella cartella:
+   • migrazione_palestra_windows.py
+   • migra.bat
+   • yuki2.mdb (il tuo database Access)
+   • gestione_palestra.sql (lo schema del nuovo DB)
+
+3. Modifica migrazione_palestra_windows.py:
+   
+   Cerca queste righe:
+   
+   ACCESS_DB_PATH = r'C:\percorso\yuki2.mdb'
+   SQL_SCHEMA_PATH = r'C:\percorso\gestione_palestra.sql'
+   
+   E modificale con i tuoi path:
+   
+   ACCESS_DB_PATH = r'C:\MigrazionePalestra\yuki2.mdb'
+   SQL_SCHEMA_PATH = r'C:\MigrazionePalestra\gestione_palestra.sql'
+   
+   Se MySQL ha password, modifica anche:
+   
+   DB_CONFIG = {
+       'host': 'localhost',
+       'user': 'root',
+       'password': 'tua_password_qui',  # <-- Modifica qui
+       'database': 'gestione_palestra'
+   }
+
+
+🎯 ESECUZIONE
+─────────────────────────────────────────────────────────────
+
+Metodo A - Doppio Click (Più facile):
+   1. Doppio click su migra.bat
+   2. Digita SI quando richiesto
+   3. Aspetta la fine
+   
+Metodo B - Prompt dei comandi:
+   1. Apri Prompt dei comandi
+   2. cd C:\MigrazionePalestra
+   3. migra.bat
+   
+Metodo C - Python diretto:
+   1. Apri Prompt dei comandi
+   2. cd C:\MigrazionePalestra
+   3. python migrazione_palestra_windows.py
+
+
+⚠️ ATTENZIONE
+─────────────────────────────────────────────────────────────
+
+• Il database "gestione_palestra" viene COMPLETAMENTE CANCELLATO
+• TUTTI i dati esistenti vengono PERSI
+• Fai un BACKUP se hai dati importanti!
+
+
+🔧 RISOLUZIONE RAPIDA PROBLEMI
+─────────────────────────────────────────────────────────────
+
+Problema: "Python non riconosciuto"
+→ Reinstalla Python e spunta "Add to PATH"
+→ Oppure usa: C:\Python3x\python.exe invece di python
+
+Problema: "Driver ODBC non trovato"  
+→ Installa Access Database Engine (link sopra)
+→ Versione 32-bit o 64-bit deve corrispondere a Python
+
+Problema: "MySQL connection failed"
+→ Verifica MySQL sia avviato (services.msc)
+→ Controlla username/password in DB_CONFIG
+→ Prova: mysql -u root -p
+
+Problema: "File non trovato"
+→ Controlla path in migrazione_palestra_windows.py
+→ Usa path assoluti: C:\cartella\file.mdb
+→ Usa sempre r'...' per i path
+
+
+✅ VERIFICA POST-MIGRAZIONE
+─────────────────────────────────────────────────────────────
+
+Apri MySQL:
+   C:\> mysql -u root -p
+   
+Dentro MySQL:
+   mysql> USE gestione_palestra;
+   mysql> SELECT COUNT(*) FROM clienti;
+   mysql> SELECT COUNT(*) FROM pagamenti;
+   
+Oppure esegui:
+   C:\> mysql -u root -p gestione_palestra < verifica_migrazione.sql
+
+
+🎓 COSA FA LO SCRIPT
+─────────────────────────────────────────────────────────────
+
+1. Si connette al database Access (yuki2.mdb)
+2. Cancella il database MySQL "gestione_palestra" se esiste
+3. Ricrea database e tabelle vuote
+4. Legge i dati da Access e li importa in MySQL:
+   
+   Anagrafica      → clienti
+   Pagamenti       → pagamenti
+   Discipline      → corsi
+   TipiAbbonamento → abbonamenti
+   ScadenzaIscr... → iscrizioni
+
+5. Crea utente admin (user: admin, pass: admin123)
+6. Mostra report finale
+
+
+💡 SUGGERIMENTI
+─────────────────────────────────────────────────────────────
+
+• Prima esecuzione? Fai un test su database di prova
+• Chiudi altri programmi che usano MySQL
+• Non interrompere lo script durante l'esecuzione
+• Cambia la password admin dopo la migrazione
+• Conserva una copia del file yuki2.mdb originale
+
+
+🔄 ESECUZIONI MULTIPLE
+─────────────────────────────────────────────────────────────
+
+Puoi eseguire lo script tutte le volte che vuoi:
+• Ogni volta resetta COMPLETAMENTE il database
+• Utile per test o correzioni
+• I dati vengono sempre letti dal file Access
+
+
+📊 RISULTATO ATTESO
+─────────────────────────────────────────────────────────────
+
+[OK] Connesso al database Access
+[OK] Connesso al server MySQL
+[OK] Database creato
+[OK] 150 clienti migrati (0 errori)
+[OK] 8 corsi migrati
+[OK] 18 abbonamenti migrati
+[OK] 450 pagamenti migrati (2 errori)
+[OK] 145 iscrizioni migrate
+[OK] MIGRAZIONE COMPLETATA! Record migrati: 771
+
+
+🔐 CREDENZIALI DEFAULT
+─────────────────────────────────────────────────────────────
+
+Dopo la migrazione, nel database ci sarà:
+
+Username: admin
+Password: admin123
+
+⚠️ CAMBIA SUBITO LA PASSWORD! ⚠️
+
+
+📁 FILE DEL PACCHETTO
+─────────────────────────────────────────────────────────────
+
+migrazione_palestra_windows.py  → Script principale Python
+migra.bat                        → Eseguibile batch
+README_WINDOWS.md                → Documentazione completa
+GUIDA_RAPIDA_WINDOWS.txt         → Questo file
+verifica_migrazione.sql          → Script di verifica
+config_windows.ini               → Configurazione (opzionale)
+
+
+⏱️ TEMPO DI ESECUZIONE
+─────────────────────────────────────────────────────────────
+
+Dipende dal numero di record:
+• 100-500 record   → 1-2 minuti
+• 500-2000 record  → 2-5 minuti
+• 2000+ record     → 5-10 minuti
+
+
+📞 CHECKLIST PRE-MIGRAZIONE
+─────────────────────────────────────────────────────────────
+
+□ Backup database MySQL esistente (se necessario)
+□ Python installato e funzionante
+□ MySQL in esecuzione
+□ Access Database Engine installato
+□ Librerie Python installate (pyodbc, mysql-connector-python)
+□ Path corretti in migrazione_palestra_windows.py
+□ Credenziali MySQL corrette
+□ File yuki2.mdb e gestione_palestra.sql presenti
+
+
+✅ CHECKLIST POST-MIGRAZIONE
+─────────────────────────────────────────────────────────────
+
+□ Nessun errore critico durante la migrazione
+□ Conteggio record corretto
+□ Test query su database migrato
+□ Password admin cambiata
+□ Backup del nuovo database creato
+
+
+╔══════════════════════════════════════════════════════════════╗
+║              PRONTO PER LA MIGRAZIONE!                       ║
+║                                                              ║
+║  Doppio click su migra.bat e segui le istruzioni           ║
+╚══════════════════════════════════════════════════════════════╝
+
+
+SUPPORTO: Consulta README_WINDOWS.md per info dettagliate

@@ -1,0 +1,290 @@
+# ISTRUZIONI DI INSTALLAZIONE - WINDOWS
+# =======================================
+
+GUIDA PASSO-PASSO PER L'INSTALLAZIONE DEI REQUISITI SU WINDOWS
+
+
+## PASSO 1: INSTALLAZIONE PYTHON
+═══════════════════════════════════════════════════════════
+
+1. Vai su: https://www.python.org/downloads/
+2. Scarica l'ultima versione di Python 3.x (es. Python 3.12)
+3. Esegui l'installer
+
+   IMPORTANTE durante l'installazione:
+   ✓ Spunta "Add Python to PATH"
+   ✓ Spunta "Install for all users" (opzionale)
+   ✓ Clicca "Install Now"
+
+4. Verifica l'installazione:
+   - Apri Prompt dei comandi (WIN + R, scrivi "cmd", INVIO)
+   - Digita: python --version
+   - Dovrebbe mostrare: Python 3.x.x
+
+Se non funziona:
+   - Riavvia il computer
+   - Oppure usa il path completo: C:\Python312\python.exe
+
+
+## PASSO 2: INSTALLAZIONE MYSQL/MARIADB
+═══════════════════════════════════════════════════════════
+
+Scegli UNA delle due opzioni:
+
+OPZIONE A - MySQL Community Server:
+───────────────────────────────────
+1. Vai su: https://dev.mysql.com/downloads/mysql/
+2. Scarica "MySQL Installer for Windows"
+3. Esegui l'installer
+4. Scegli "Custom" o "Server only"
+5. Durante la configurazione:
+   - Tipo: Development Computer
+   - Root password: (scegli una password o lascia vuoto)
+   - Windows Service: Sì
+6. Completa l'installazione
+
+OPZIONE B - MariaDB:
+────────────────────
+1. Vai su: https://mariadb.org/download/
+2. Scarica "MariaDB Server"
+3. Esegui l'installer
+4. Segui il wizard di installazione
+5. Imposta password root (o lascia vuoto)
+
+VERIFICA MYSQL:
+───────────────
+1. Apri "Servizi" di Windows (WIN + R, scrivi "services.msc")
+2. Cerca "MySQL" o "MariaDB"
+3. Verifica che il servizio sia "In esecuzione"
+4. Se non è avviato, click destro → Avvia
+
+Oppure da Prompt dei comandi:
+   mysql --version
+
+
+## PASSO 3: MICROSOFT ACCESS DATABASE ENGINE
+═══════════════════════════════════════════════════════════
+
+NECESSARIO per leggere file .mdb su Windows!
+
+Scegli la versione corretta:
+
+VERSIONE 32-BIT:
+────────────────
+Per Python 32-bit o Office 32-bit
+↓ https://www.microsoft.com/en-us/download/details.aspx?id=13255
+
+VERSIONE 64-BIT:
+────────────────
+Per Python 64-bit o Office 64-bit (consigliato)
+↓ https://www.microsoft.com/en-us/download/details.aspx?id=54920
+
+COME SCEGLIERE:
+───────────────
+1. Apri Prompt dei comandi
+2. Digita: python -c "import struct; print(struct.calcsize('P') * 8, 'bit')"
+3. Il risultato (32 o 64) indica quale versione scaricare
+
+INSTALLAZIONE:
+──────────────
+1. Scarica il file .exe corretto
+2. Esegui l'installer
+3. Accetta i termini e installa
+
+NOTA: Se hai già Office installato, probabilmente hai già questo driver.
+
+
+## PASSO 4: LIBRERIE PYTHON
+═══════════════════════════════════════════════════════════
+
+METODO 1 - Installazione Standard:
+───────────────────────────────────
+1. Apri Prompt dei comandi COME AMMINISTRATORE:
+   - WIN + X
+   - Scegli "Prompt dei comandi (amministratore)" o "Windows PowerShell (amministratore)"
+
+2. Installa le librerie:
+
+   pip install pyodbc
+   
+   pip install mysql-connector-python
+
+3. Verifica installazione:
+
+   python -c "import pyodbc; print('pyodbc OK')"
+   python -c "import mysql.connector; print('mysql-connector OK')"
+
+METODO 2 - Se pip non funziona:
+────────────────────────────────
+   python -m pip install --upgrade pip
+   python -m pip install pyodbc
+   python -m pip install mysql-connector-python
+
+METODO 3 - Installazione offline:
+──────────────────────────────────
+Se non hai connessione internet:
+
+1. Su un PC con internet, scarica i file wheel (.whl):
+   https://pypi.org/project/pyodbc/#files
+   https://pypi.org/project/mysql-connector-python/#files
+
+2. Trasferisci i file su chiavetta USB
+
+3. Sul PC target:
+   pip install nomefile.whl
+
+
+## VERIFICA COMPLETA DELL'INSTALLAZIONE
+═══════════════════════════════════════════════════════════
+
+Crea un file test.py con questo contenuto:
+
+────────────────────────────────────────────────────────────
+import sys
+print(f"Python: {sys.version}")
+
+try:
+    import pyodbc
+    print("✓ pyodbc installato")
+    print(f"  Driver disponibili: {pyodbc.drivers()}")
+except ImportError:
+    print("✗ pyodbc NON installato")
+
+try:
+    import mysql.connector
+    print("✓ mysql-connector-python installato")
+except ImportError:
+    print("✗ mysql-connector-python NON installato")
+
+print("\nTest completato!")
+────────────────────────────────────────────────────────────
+
+Esegui: python test.py
+
+Output atteso:
+────────────────
+Python: 3.12.x ...
+✓ pyodbc installato
+  Driver disponibili: ['SQL Server', 'Microsoft Access Driver (*.mdb, *.accdb)', ...]
+✓ mysql-connector-python installato
+
+Test completato!
+
+
+## RISOLUZIONE PROBLEMI COMUNI
+═══════════════════════════════════════════════════════════
+
+PROBLEMA: "Python non riconosciuto come comando"
+SOLUZIONE:
+   1. Verifica che Python sia nel PATH:
+      - Pannello di Controllo → Sistema → Impostazioni avanzate
+      - Variabili d'ambiente
+      - PATH dovrebbe contenere: C:\Python3x\ e C:\Python3x\Scripts\
+   2. Oppure usa il path completo: C:\Python312\python.exe
+
+PROBLEMA: "pip non riconosciuto"
+SOLUZIONE:
+   Usa: python -m pip invece di pip
+   Esempio: python -m pip install pyodbc
+
+PROBLEMA: "Accesso negato" durante installazione
+SOLUZIONE:
+   Esegui Prompt dei comandi come Amministratore
+
+PROBLEMA: "Driver ODBC non trovato"
+SOLUZIONE:
+   1. Verifica installazione Access Database Engine
+   2. Controlla che la versione (32/64-bit) corrisponda a Python
+   3. Esegui: odbcad32.exe per vedere i driver installati
+
+PROBLEMA: "MySQL non si avvia"
+SOLUZIONE:
+   1. Apri "services.msc"
+   2. Cerca MySQL
+   3. Click destro → Proprietà → Tipo di avvio: Automatico
+   4. Click destro → Avvia
+
+PROBLEMA: Conflitto Office 32-bit con Python 64-bit
+SOLUZIONE:
+   1. OPZIONE A: Installa Python 32-bit
+   2. OPZIONE B: Disinstalla Office, installa Access Engine 64-bit
+
+
+## CHECKLIST FINALE
+═══════════════════════════════════════════════════════════
+
+Verifica che tutto sia installato correttamente:
+
+□ Python 3.x installato e funzionante
+   Verifica: python --version
+
+□ pip funzionante
+   Verifica: pip --version
+
+□ MySQL/MariaDB installato e in esecuzione
+   Verifica: mysql --version
+   Verifica: services.msc (cercare MySQL)
+
+□ Access Database Engine installato
+   Verifica: odbcad32.exe (cerca driver Access)
+
+□ pyodbc installato
+   Verifica: python -c "import pyodbc; print('OK')"
+
+□ mysql-connector-python installato
+   Verifica: python -c "import mysql.connector; print('OK')"
+
+□ Driver ODBC Access presente
+   Verifica: python -c "import pyodbc; print(pyodbc.drivers())"
+
+
+## PROSSIMI PASSI
+═══════════════════════════════════════════════════════════
+
+Dopo aver completato l'installazione:
+
+1. Leggi README_WINDOWS.md per configurazione dettagliata
+2. Modifica i path in migrazione_palestra_windows.py
+3. Esegui migra.bat per iniziare la migrazione
+
+
+## LINK UTILI
+═══════════════════════════════════════════════════════════
+
+Python:
+   https://www.python.org/downloads/
+
+MySQL:
+   https://dev.mysql.com/downloads/mysql/
+
+MariaDB:
+   https://mariadb.org/download/
+
+Access Database Engine 32-bit:
+   https://www.microsoft.com/download/details.aspx?id=13255
+
+Access Database Engine 64-bit:
+   https://www.microsoft.com/download/details.aspx?id=54920
+
+pyodbc:
+   https://pypi.org/project/pyodbc/
+
+mysql-connector-python:
+   https://pypi.org/project/mysql-connector-python/
+
+
+## TEMPO STIMATO PER L'INSTALLAZIONE
+═══════════════════════════════════════════════════════════
+
+Python:                     5-10 minuti
+MySQL/MariaDB:             10-20 minuti
+Access Database Engine:     2-5 minuti
+Librerie Python:            2-5 minuti
+──────────────────────────────────────
+TOTALE:                    20-40 minuti
+
+
+═══════════════════════════════════════════════════════════
+Installazione completata? Procedi con la configurazione!
+Consulta: README_WINDOWS.md e GUIDA_RAPIDA_WINDOWS.txt
+═══════════════════════════════════════════════════════════
